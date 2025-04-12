@@ -120,3 +120,25 @@
     @apply bg-gradient-to-r from-megdan-primary to-megdan-secondary bg-clip-text text-transparent;
   }
 }
+
+/* Smooth scrolling for animation effects */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Additional animations */
+@keyframes float-phone {
+  0% {
+    transform: translateY(0) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-2deg);
+  }
+  100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+}
+
+.animate-float-phone {
+  animation: float-phone 6s ease-in-out infinite;
+}
