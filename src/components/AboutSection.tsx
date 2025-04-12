@@ -20,14 +20,14 @@ const AboutSection = () => {
   }, []);
 
   return (
-    <section className="py-20 bg-white min-h-screen flex items-center justify-center">
+    <section className="py-20 bg-white h-[80vh] flex items-center justify-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Full height container to ensure phone remains in frame */}
+        {/* Container with fixed height to ensure proper spacing before footer */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.8 }}
-          className="w-full h-screen"
+          className="w-full h-full"
         />
       </div>
     </section>
