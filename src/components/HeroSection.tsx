@@ -28,8 +28,8 @@ const HeroSection = () => {
   // Calculate phone position based on scroll, but only start moving after all bullet points appear
   const phoneScrollY = thirdLineVisible ? Math.min((scrollY - vh * 0.8) * 0.6, vh) : 0;
   
-  // Calculate horizontal position to move phone to center after all bullet points appear
-  const moveToCenter = thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.2), 1) : 0;
+  // Calculate horizontal position to move phone to right side after all bullet points appear
+  const moveToRight = thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.2), 1) : 0;
 
   return (
     <section 
@@ -51,7 +51,9 @@ const HeroSection = () => {
         {/* Phone with iframe */}
         <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between mt-8">
           {/* Content that appears as user scrolls - on the left */}
-          <div className={`max-w-md space-y-12 text-left ${thirdLineVisible ? 'md:mr-auto' : ''}`}>
+          <div className={`max-w-md space-y-12 text-left transition-all duration-300`} style={{
+            width: thirdLineVisible ? '50%' : '100%'
+          }}>
             <motion.p 
               className="text-2xl md:text-3xl"
               style={{ 
@@ -83,18 +85,20 @@ const HeroSection = () => {
             </motion.p>
           </div>
           
-          {/* Phone container - moves down with scroll and transitions to center position */}
+          {/* Phone container - moves down with scroll and transitions to right position */}
           <motion.div 
-            className="relative mt-12 md:mt-0"
+            className="relative mt-12 md:mt-0 transition-all duration-500"
             style={{ 
               opacity: phoneVisible ? Math.min((scrollY - vh * 0.2) / (vh * 0.2), 1) : 0,
               transform: `
-                translateX(${phoneVisible ? (moveToCenter ? 'calc(-50% + 150px)' : '0') : '50px'}) 
+                translateX(${phoneVisible ? (moveToRight ? 'calc(50% - 150px)' : '0') : '50px'}) 
                 translateY(${phoneScrollY}px) 
-                rotate(${5 - (moveToCenter * 5)}deg)
+                rotate(${5 - (moveToRight * 5)}deg)
               `,
-              margin: moveToCenter > 0 ? '0 auto' : '',
-              transition: 'transform 0.3s ease-out'
+              position: thirdLineVisible && scrollY > vh * 1.2 ? 'fixed' : 'relative',
+              top: thirdLineVisible && scrollY > vh * 1.2 ? '20%' : 'auto',
+              right: thirdLineVisible && scrollY > vh * 1.2 ? '5%' : 'auto',
+              zIndex: 10
             }}
           >
             <div className="w-[300px] h-[600px] bg-black rounded-[40px] p-3 shadow-xl">

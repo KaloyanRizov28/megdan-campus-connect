@@ -1,13 +1,35 @@
 
 import { Shield, Zap, Users, BookOpen, MessageCircle, Calendar } from "lucide-react";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
-const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) => {
+const FeatureCard = ({ icon, title, description, delay }: { 
+  icon: React.ReactNode, 
+  title: string, 
+  description: string,
+  delay: number
+}) => {
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, delay);
+    
+    return () => clearTimeout(timer);
+  }, [delay]);
+  
   return (
-    <div className="feature-card">
+    <motion.div 
+      className="feature-card"
+      initial={{ opacity: 0, y: 20 }}
+      animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="mb-4 text-megdan-primary">{icon}</div>
       <h3 className="text-xl font-heading font-semibold mb-2">{title}</h3>
       <p className="text-gray-600">{description}</p>
-    </div>
+    </motion.div>
   );
 };
 
@@ -57,13 +79,14 @@ const FeaturesSection = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:pl-0 lg:pl-72 xl:pl-80 relative">
           {features.map((feature, index) => (
             <FeatureCard
               key={index}
               icon={feature.icon}
               title={feature.title}
               description={feature.description}
+              delay={index * 200}
             />
           ))}
         </div>
