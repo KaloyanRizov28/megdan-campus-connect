@@ -105,11 +105,11 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-megdan-primary text-white font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
+    @apply bg-palette-iris text-white font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
   }
   
   .btn-secondary {
-    @apply bg-white text-megdan-primary border border-megdan-primary font-medium px-6 py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300;
+    @apply bg-white text-palette-iris border border-palette-iris font-medium px-6 py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300;
   }
   
   .feature-card {
@@ -117,7 +117,11 @@
   }
   
   .heading-gradient {
-    @apply bg-gradient-to-r from-megdan-primary to-megdan-secondary bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-palette-iris to-palette-violet bg-clip-text text-transparent;
+  }
+
+  .gradient-background {
+    @apply bg-gradient-bottom-right;
   }
 }
 

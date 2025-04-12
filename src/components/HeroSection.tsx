@@ -26,7 +26,7 @@ const HeroSection = () => {
   const thirdLineVisible = scrollY >= vh * 0.8;
 
   // Calculate phone position based on scroll, but only start moving after all bullet points appear
-  const phoneScrollY = thirdLineVisible ? Math.min((scrollY - vh * 0.8) * 0.6, vh) : 0;
+  const phoneScrollY = thirdLineVisible ? Math.min((scrollY - vh * 0.8) * 0.6, vh * 0.8) : 0;
   
   // Calculate horizontal position to move phone to right side after all bullet points appear
   const moveToRight = thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.2), 1) : 0;
@@ -34,12 +34,12 @@ const HeroSection = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="min-h-[200vh] relative bg-white"
+      className="min-h-[200vh] relative bg-palette-platinum/10"
     >
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-4">
         {/* Main title - fades out as user scrolls */}
         <motion.h1 
-          className="text-6xl md:text-8xl font-bold text-center"
+          className="text-6xl md:text-8xl font-bold text-center heading-gradient"
           style={{ 
             opacity: titleVisible ? 1 - (scrollY / (vh * 0.3)) : 0,
             filter: `blur(${scrollY / vh * 5}px)`
@@ -55,7 +55,7 @@ const HeroSection = () => {
             width: thirdLineVisible ? '50%' : '100%'
           }}>
             <motion.p 
-              className="text-2xl md:text-3xl"
+              className="text-2xl md:text-3xl text-palette-violet font-medium"
               style={{ 
                 opacity: firstLineVisible ? Math.min((scrollY - vh * 0.4) / (vh * 0.1), 1) : 0,
                 transform: `translateX(${firstLineVisible ? 0 : -20}px)`
@@ -65,7 +65,7 @@ const HeroSection = () => {
             </motion.p>
             
             <motion.p 
-              className="text-2xl md:text-3xl"
+              className="text-2xl md:text-3xl text-palette-teal font-medium"
               style={{ 
                 opacity: secondLineVisible ? Math.min((scrollY - vh * 0.6) / (vh * 0.1), 1) : 0,
                 transform: `translateX(${secondLineVisible ? 0 : -20}px)`
@@ -75,7 +75,7 @@ const HeroSection = () => {
             </motion.p>
             
             <motion.p 
-              className="text-2xl md:text-3xl"
+              className="text-2xl md:text-3xl text-palette-iris font-medium"
               style={{ 
                 opacity: thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.1), 1) : 0,
                 transform: `translateX(${thirdLineVisible ? 0 : -20}px)`
@@ -102,7 +102,7 @@ const HeroSection = () => {
             }}
           >
             <div className="w-[300px] h-[600px] bg-black rounded-[40px] p-3 shadow-xl">
-              <div className="w-full h-full bg-white rounded-[36px] overflow-hidden relative">
+              <div className="w-full h-full bg-gradient-top-right rounded-[36px] overflow-hidden relative">
                 {/* Notch */}
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-xl z-10"></div>
                 
@@ -122,7 +122,7 @@ const HeroSection = () => {
         
         {/* Scroll indicator - only visible at the top */}
         {scrollY < vh * 0.1 && (
-          <div className="absolute bottom-8 animate-bounce">
+          <div className="absolute bottom-8 animate-bounce text-palette-iris">
             <ArrowDown size={32} />
             <span className="sr-only">Scroll down</span>
           </div>

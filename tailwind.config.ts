@@ -63,13 +63,21 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors for Megdan
+				// Custom colors for Megdan using the new palette
 				megdan: {
-					primary: '#4F46E5',
-					secondary: '#7C3AED',
-					accent: '#C4B5FD',
-					light: '#EDE9FE',
-					dark: '#2E1065',
+					primary: '#614EC1', // iris
+					secondary: '#484877', // ultra-violet
+					accent: '#74F269', // screamin-green
+					light: '#D3D4D9', // platinum
+					dark: '#107778', // myrtle-green
+				},
+				// New color palette
+				palette: {
+					platinum: '#D3D4D9',
+					iris: '#614EC1',
+					green: '#74F269',
+					teal: '#107778',
+					violet: '#484877',
 				}
 			},
 			fontFamily: {
@@ -107,6 +115,17 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'float': 'float 6s ease-in-out infinite'
+			},
+			backgroundImage: {
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+				'gradient-top': 'linear-gradient(0deg, #D3D4D9, #614EC1, #74F269, #107778, #484877)',
+				'gradient-right': 'linear-gradient(90deg, #D3D4D9, #614EC1, #74F269, #107778, #484877)',
+				'gradient-bottom': 'linear-gradient(180deg, #D3D4D9, #614EC1, #74F269, #107778, #484877)',
+				'gradient-left': 'linear-gradient(270deg, #D3D4D9, #614EC1, #74F269, #107778, #484877)',
+				'gradient-top-right': 'linear-gradient(45deg, #D3D4D9, #614EC1, #74F269, #107778, #484877)',
+				'gradient-bottom-right': 'linear-gradient(135deg, #D3D4D9, #614EC1, #74F269, #107778, #484877)',
+				'gradient-top-left': 'linear-gradient(225deg, #D3D4D9, #614EC1, #74F269, #107778, #484877)',
+				'gradient-bottom-left': 'linear-gradient(315deg, #D3D4D9, #614EC1, #74F269, #107778, #484877)',
 			}
 		}
 	},
