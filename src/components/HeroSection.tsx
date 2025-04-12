@@ -1,6 +1,6 @@
 
 import { useEffect, useState, useRef } from "react";
-import { ArrowDown, Smartphone } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { motion } from "framer-motion";
 
 const HeroSection = () => {
@@ -24,7 +24,9 @@ const HeroSection = () => {
   const firstLineVisible = scrollY >= vh * 0.4;
   const secondLineVisible = scrollY >= vh * 0.6;
   const thirdLineVisible = scrollY >= vh * 0.8;
-  const ctaVisible = scrollY >= vh * 1.0;
+
+  // Calculate phone position based on scroll
+  const phoneScrollY = Math.min(scrollY * 0.5, vh); // Limits how far the phone can scroll
 
   return (
     <section 
@@ -76,24 +78,14 @@ const HeroSection = () => {
             >
               Shape your future
             </motion.p>
-            
-            <motion.button
-              className="bg-black text-white px-8 py-4 rounded-full text-xl"
-              style={{ 
-                opacity: ctaVisible ? Math.min((scrollY - vh * 1.0) / (vh * 0.1), 1) : 0,
-                transform: `translateY(${ctaVisible ? 0 : 20}px)`
-              }}
-            >
-              Get Started
-            </motion.button>
           </div>
           
-          {/* Phone container - on the right */}
+          {/* Phone container - on the right, now moves down with scroll */}
           <motion.div 
             className="relative mt-12 md:mt-0"
             style={{ 
               opacity: phoneVisible ? Math.min((scrollY - vh * 0.2) / (vh * 0.2), 1) : 0,
-              transform: `translateX(${phoneVisible ? 0 : 50}px) rotate(5deg)`
+              transform: `translateX(${phoneVisible ? 0 : 50}px) translateY(${phoneScrollY}px) rotate(5deg)`
             }}
           >
             <div className="w-[300px] h-[600px] bg-black rounded-[40px] p-3 shadow-xl">
