@@ -1,6 +1,5 @@
 
 import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import CommunitySection from "@/components/CommunitySection";
 import TestimonialsSection from "@/components/TestimonialsSection";
@@ -12,9 +11,8 @@ const Index = () => {
     <div className="min-h-screen relative">
       <Navbar />
       <main>
-        <HeroSection />
+        <FeaturesSection />
         <div className="relative z-20 bg-gray-50">
-          <FeaturesSection />
           <CommunitySection />
           <TestimonialsSection />
           <CtaSection />
