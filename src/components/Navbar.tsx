@@ -6,12 +6,13 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white/90 backdrop-blur-sm fixed w-full top-0 z-50">
+    <nav className="bg-white/80 backdrop-blur-sm fixed w-full top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <a href="/" className="flex-shrink-0 flex items-center">
+            <a href="/" className="flex-shrink-0 flex items-center flex-col">
               <span className="text-2xl font-heading font-bold">Megdan</span>
+              <span className="text-sm text-gray-500">Connect your campus</span>
             </a>
           </div>
           

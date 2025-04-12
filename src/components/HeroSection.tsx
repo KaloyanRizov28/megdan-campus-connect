@@ -1,6 +1,6 @@
 
 import { useEffect, useState, useRef } from "react";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Smartphone } from "lucide-react";
 import { motion } from "framer-motion";
 
 const HeroSection = () => {
@@ -20,10 +20,11 @@ const HeroSection = () => {
   // Calculate visibility thresholds based on viewport height
   const vh = typeof window !== 'undefined' ? window.innerHeight : 0;
   const titleVisible = scrollY < vh * 0.3;
-  const firstLineVisible = scrollY >= vh * 0.2;
-  const secondLineVisible = scrollY >= vh * 0.4;
-  const thirdLineVisible = scrollY >= vh * 0.6;
-  const ctaVisible = scrollY >= vh * 0.8;
+  const phoneVisible = scrollY >= vh * 0.2;
+  const firstLineVisible = scrollY >= vh * 0.4;
+  const secondLineVisible = scrollY >= vh * 0.6;
+  const thirdLineVisible = scrollY >= vh * 0.8;
+  const ctaVisible = scrollY >= vh * 1.0;
 
   return (
     <section 
@@ -42,47 +43,76 @@ const HeroSection = () => {
           Megdan
         </motion.h1>
 
-        {/* Content that appears as user scrolls */}
-        <div className="max-w-2xl mx-auto mt-8 space-y-12 text-center">
-          <motion.p 
-            className="text-2xl md:text-3xl"
-            style={{ 
-              opacity: firstLineVisible ? Math.min((scrollY - vh * 0.2) / (vh * 0.1), 1) : 0,
-              transform: `translateY(${firstLineVisible ? 0 : 20}px)`
-            }}
-          >
-            Connect with your university
-          </motion.p>
+        {/* Phone with iframe */}
+        <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between mt-8">
+          {/* Content that appears as user scrolls - on the left */}
+          <div className="max-w-md space-y-12 text-left">
+            <motion.p 
+              className="text-2xl md:text-3xl"
+              style={{ 
+                opacity: firstLineVisible ? Math.min((scrollY - vh * 0.4) / (vh * 0.1), 1) : 0,
+                transform: `translateX(${firstLineVisible ? 0 : -20}px)`
+              }}
+            >
+              Connect with your university
+            </motion.p>
+            
+            <motion.p 
+              className="text-2xl md:text-3xl"
+              style={{ 
+                opacity: secondLineVisible ? Math.min((scrollY - vh * 0.6) / (vh * 0.1), 1) : 0,
+                transform: `translateX(${secondLineVisible ? 0 : -20}px)`
+              }}
+            >
+              Build your network
+            </motion.p>
+            
+            <motion.p 
+              className="text-2xl md:text-3xl"
+              style={{ 
+                opacity: thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.1), 1) : 0,
+                transform: `translateX(${thirdLineVisible ? 0 : -20}px)`
+              }}
+            >
+              Shape your future
+            </motion.p>
+            
+            <motion.button
+              className="bg-black text-white px-8 py-4 rounded-full text-xl"
+              style={{ 
+                opacity: ctaVisible ? Math.min((scrollY - vh * 1.0) / (vh * 0.1), 1) : 0,
+                transform: `translateY(${ctaVisible ? 0 : 20}px)`
+              }}
+            >
+              Get Started
+            </motion.button>
+          </div>
           
-          <motion.p 
-            className="text-2xl md:text-3xl"
+          {/* Phone container - on the right */}
+          <motion.div 
+            className="relative mt-12 md:mt-0"
             style={{ 
-              opacity: secondLineVisible ? Math.min((scrollY - vh * 0.4) / (vh * 0.1), 1) : 0,
-              transform: `translateY(${secondLineVisible ? 0 : 20}px)`
+              opacity: phoneVisible ? Math.min((scrollY - vh * 0.2) / (vh * 0.2), 1) : 0,
+              transform: `translateX(${phoneVisible ? 0 : 50}px) rotate(5deg)`
             }}
           >
-            Build your network
-          </motion.p>
-          
-          <motion.p 
-            className="text-2xl md:text-3xl"
-            style={{ 
-              opacity: thirdLineVisible ? Math.min((scrollY - vh * 0.6) / (vh * 0.1), 1) : 0,
-              transform: `translateY(${thirdLineVisible ? 0 : 20}px)`
-            }}
-          >
-            Shape your future
-          </motion.p>
-          
-          <motion.button
-            className="bg-black text-white px-8 py-4 rounded-full text-xl"
-            style={{ 
-              opacity: ctaVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.1), 1) : 0,
-              transform: `translateY(${ctaVisible ? 0 : 20}px)`
-            }}
-          >
-            Get Started
-          </motion.button>
+            <div className="w-[300px] h-[600px] bg-black rounded-[40px] p-3 shadow-xl">
+              <div className="w-full h-full bg-white rounded-[36px] overflow-hidden relative">
+                {/* Notch */}
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-xl z-10"></div>
+                
+                {/* Iframe content */}
+                <div className="pt-8 h-full">
+                  <iframe
+                    src="https://megdan.vercel.app" 
+                    title="Megdan Preview"
+                    className="w-full h-full border-none"
+                    style={{ pointerEvents: 'none' }} // Disable interaction with iframe
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
         
         {/* Scroll indicator - only visible at the top */}
