@@ -23,16 +23,20 @@ const AnimatedPhone = ({ className = "" }: AnimatedPhoneProps) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Calculate rotation and position based on scroll
-  const rotation = -15 + (scrollPosition * 30); // Start at -15deg and rotate to 15deg
-  const translateX = scrollPosition * 100; // Move right as we scroll
+  // Calculate rotation based on scroll - start at 30 degrees from 12 o'clock mark
+  // 12 o'clock would be -90 degrees, so 30 degrees from that would be -60 degrees
+  const initialRotation = -60;
+  const rotation = initialRotation + (scrollPosition * 60); // Rotate as we scroll
+  
+  // Move right as we scroll
+  const translateX = scrollPosition * 150; // More movement to the right
 
   return (
     <div 
       ref={phoneRef}
       className={`relative transition-transform duration-100 ${className}`}
       style={{ 
-        transform: `perspective(1000px) rotateY(${rotation}deg) translateX(${translateX}px)`,
+        transform: `perspective(1000px) rotateZ(${rotation}deg) translateX(${translateX}px)`,
         transformOrigin: 'center center'
       }}
     >

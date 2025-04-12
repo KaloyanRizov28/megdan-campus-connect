@@ -51,9 +51,8 @@ const HeroSection = () => {
             <div className="absolute top-4 -left-4 w-72 h-72 bg-megdan-accent rounded-full filter blur-3xl opacity-30 animate-float"></div>
             <div className="absolute bottom-4 -right-4 w-72 h-72 bg-megdan-primary rounded-full filter blur-3xl opacity-20 animate-float" style={{ animationDelay: '2s' }}></div>
             
-            {/* Replace the original image with AnimatedPhone */}
-            <div className="flex justify-center items-center h-full">
-              <AnimatedPhone className="transform -rotate-5" />
+            <div className="flex justify-center items-center h-full overflow-visible">
+              <AnimatedPhone />
             </div>
           </div>
         </div>
