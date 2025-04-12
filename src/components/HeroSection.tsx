@@ -6,48 +6,30 @@ import { motion } from "framer-motion";
 const HeroSection = () => {
   const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const [windowHeight, setWindowHeight] = useState(0);
   
-  // Track scroll position and window height
+  // Track scroll position
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
     
-    const handleResize = () => {
-      setWindowHeight(window.innerHeight);
-    };
-    
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
-    
-    // Initial setup
-    handleResize();
-    
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Calculate visibility thresholds based on viewport height
-  const vh = windowHeight;
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 0;
   const titleVisible = scrollY < vh * 0.3;
   const phoneVisible = scrollY >= vh * 0.2;
   const firstLineVisible = scrollY >= vh * 0.4;
   const secondLineVisible = scrollY >= vh * 0.6;
   const thirdLineVisible = scrollY >= vh * 0.8;
 
-  // Calculate phone position based on scroll, but stop before footer and ensure it remains visible
-  const footerHeight = 300; // Approximate footer height
-  const maxPhoneScrollY = vh * 0.6; // Limit to keep phone visible in viewport
-  const phoneScrollY = thirdLineVisible 
-    ? Math.min((scrollY - vh * 0.8) * 0.4, maxPhoneScrollY) 
-    : 0;
+  // Calculate phone position based on scroll, but only start moving after all bullet points appear
+  const phoneScrollY = thirdLineVisible ? Math.min((scrollY - vh * 0.8) * 0.6, vh) : 0;
   
   // Calculate horizontal position to move phone to right side after all bullet points appear
-  // Limit the movement to ensure phone stays visible
-  const moveToRight = thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.2), 0.7) : 0;
+  const moveToRight = thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.2), 1) : 0;
 
   return (
     <section 
@@ -109,13 +91,13 @@ const HeroSection = () => {
             style={{ 
               opacity: phoneVisible ? Math.min((scrollY - vh * 0.2) / (vh * 0.2), 1) : 0,
               transform: `
-                translateX(${phoneVisible ? (moveToRight ? 'calc(25% - 75px)' : '0') : '50px'}) 
+                translateX(${phoneVisible ? (moveToRight ? 'calc(50% - 150px)' : '0') : '50px'}) 
                 translateY(${phoneScrollY}px) 
                 rotate(${5 - (moveToRight * 5)}deg)
               `,
               position: thirdLineVisible && scrollY > vh * 1.2 ? 'fixed' : 'relative',
-              top: thirdLineVisible && scrollY > vh * 1.2 ? '25%' : 'auto',
-              right: thirdLineVisible && scrollY > vh * 1.2 ? 'auto' : 'auto',
+              top: thirdLineVisible && scrollY > vh * 1.2 ? '20%' : 'auto',
+              right: thirdLineVisible && scrollY > vh * 1.2 ? '5%' : 'auto',
               zIndex: 10
             }}
           >
