@@ -34,7 +34,7 @@ const HeroSection = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="min-h-[300vh] relative bg-white"
+      className="min-h-[200vh] relative bg-white"
     >
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-4">
         {/* Main title - fades out as user scrolls */}
