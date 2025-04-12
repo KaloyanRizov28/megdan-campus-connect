@@ -25,8 +25,8 @@ const HeroSection = () => {
   const secondLineVisible = scrollY >= vh * 0.6;
   const thirdLineVisible = scrollY >= vh * 0.8;
 
-  // Calculate phone position based on scroll, but only start moving after first bullet point appears
-  const phoneScrollY = firstLineVisible ? Math.min((scrollY - vh * 0.4) * 0.6, vh) : 0;
+  // Calculate phone position based on scroll, but only start moving after all bullet points appear
+  const phoneScrollY = thirdLineVisible ? Math.min((scrollY - vh * 0.8) * 0.6, vh) : 0;
   
   // Calculate horizontal position to move phone to center after all bullet points appear
   const moveToCenter = thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.2), 1) : 0;
