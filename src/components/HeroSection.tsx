@@ -1,97 +1,97 @@
 
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Users, MessageSquare, BookOpen, CheckCircle2 } from "lucide-react";
-import AnimatedPhone from "./AnimatedPhone";
 import { useEffect, useState, useRef } from "react";
+import { ArrowDown } from "lucide-react";
+import { motion } from "framer-motion";
 
 const HeroSection = () => {
-  const [visiblePoints, setVisiblePoints] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-
-  // Bullet points content
-  const bulletPoints = [
-    "Connect with classmates instantly",
-    "Join study groups and events",
-    "Share notes and resources",
-    "Stay updated on campus life"
-  ];
-
+  
+  // Track scroll position
   useEffect(() => {
     const handleScroll = () => {
-      if (!sectionRef.current) return;
-      
-      const sectionTop = sectionRef.current.getBoundingClientRect().top;
-      const windowHeight = window.innerHeight;
-      
-      // Calculate scroll percentage within the section
-      const scrollPercentage = Math.min(Math.max((windowHeight - sectionTop) / windowHeight, 0), 1);
-      
-      // Calculate how many bullet points should be visible based on scroll
-      const pointsToShow = Math.ceil(scrollPercentage * bulletPoints.length);
-      setVisiblePoints(pointsToShow);
+      setScrollY(window.scrollY);
     };
-
-    window.addEventListener("scroll", handleScroll);
-    // Trigger once on load to set initial state
-    handleScroll();
     
+    window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [bulletPoints.length]);
+  }, []);
+
+  // Calculate visibility thresholds based on viewport height
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 0;
+  const titleVisible = scrollY < vh * 0.3;
+  const firstLineVisible = scrollY >= vh * 0.2;
+  const secondLineVisible = scrollY >= vh * 0.4;
+  const thirdLineVisible = scrollY >= vh * 0.6;
+  const ctaVisible = scrollY >= vh * 0.8;
 
   return (
-    <section ref={sectionRef} className="pt-24 pb-16 md:pt-28 md:pb-20 lg:pt-32 lg:pb-24 overflow-x-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center mb-12 text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold mb-2">
-            Megdan
-          </h1>
-          <p className="text-xl md:text-2xl text-megdan-secondary mb-8">
-            Your University, <span className="heading-gradient">Connected</span>
-          </p>
+    <section 
+      ref={sectionRef} 
+      className="min-h-[300vh] relative bg-white"
+    >
+      <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-4">
+        {/* Main title - fades out as user scrolls */}
+        <motion.h1 
+          className="text-6xl md:text-8xl font-bold text-center"
+          style={{ 
+            opacity: titleVisible ? 1 - (scrollY / (vh * 0.3)) : 0,
+            filter: `blur(${scrollY / vh * 5}px)`
+          }}
+        >
+          Megdan
+        </motion.h1>
+
+        {/* Content that appears as user scrolls */}
+        <div className="max-w-2xl mx-auto mt-8 space-y-12 text-center">
+          <motion.p 
+            className="text-2xl md:text-3xl"
+            style={{ 
+              opacity: firstLineVisible ? Math.min((scrollY - vh * 0.2) / (vh * 0.1), 1) : 0,
+              transform: `translateY(${firstLineVisible ? 0 : 20}px)`
+            }}
+          >
+            Connect with your university
+          </motion.p>
+          
+          <motion.p 
+            className="text-2xl md:text-3xl"
+            style={{ 
+              opacity: secondLineVisible ? Math.min((scrollY - vh * 0.4) / (vh * 0.1), 1) : 0,
+              transform: `translateY(${secondLineVisible ? 0 : 20}px)`
+            }}
+          >
+            Build your network
+          </motion.p>
+          
+          <motion.p 
+            className="text-2xl md:text-3xl"
+            style={{ 
+              opacity: thirdLineVisible ? Math.min((scrollY - vh * 0.6) / (vh * 0.1), 1) : 0,
+              transform: `translateY(${thirdLineVisible ? 0 : 20}px)`
+            }}
+          >
+            Shape your future
+          </motion.p>
+          
+          <motion.button
+            className="bg-black text-white px-8 py-4 rounded-full text-xl"
+            style={{ 
+              opacity: ctaVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.1), 1) : 0,
+              transform: `translateY(${ctaVisible ? 0 : 20}px)`
+            }}
+          >
+            Get Started
+          </motion.button>
         </div>
         
-        <div className="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
-          <div className="mb-12 lg:mb-0 order-2 lg:order-1">
-            <p className="text-xl text-gray-600 mb-8 max-w-lg">
-              Join the online campus built exclusively for your university.
-              Connect with peers, share resources, and build your academic community.
-            </p>
-            
-            <div className="space-y-4 mb-8">
-              {bulletPoints.map((point, index) => (
-                <div 
-                  key={index}
-                  className={`flex items-center gap-3 transition-all duration-500 ${
-                    index < visiblePoints 
-                      ? "opacity-100 translate-x-0" 
-                      : "opacity-0 -translate-x-10"
-                  }`}
-                >
-                  <CheckCircle2 className="h-6 w-6 text-megdan-primary flex-shrink-0" />
-                  <span className="text-lg">{point}</span>
-                </div>
-              ))}
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="btn-primary flex items-center gap-2">
-                Get Started <ArrowRight className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" className="btn-secondary">
-                Learn More
-              </Button>
-            </div>
+        {/* Scroll indicator - only visible at the top */}
+        {scrollY < vh * 0.1 && (
+          <div className="absolute bottom-8 animate-bounce">
+            <ArrowDown size={32} />
+            <span className="sr-only">Scroll down</span>
           </div>
-          
-          <div className="relative order-1 lg:order-2 mb-12 lg:mb-0">
-            <div className="absolute top-4 -left-4 w-72 h-72 bg-megdan-accent rounded-full filter blur-3xl opacity-30 animate-float"></div>
-            <div className="absolute bottom-4 -right-4 w-72 h-72 bg-megdan-primary rounded-full filter blur-3xl opacity-20 animate-float" style={{ animationDelay: '2s' }}></div>
-            
-            <div className="flex justify-center items-center h-full overflow-visible">
-              <AnimatedPhone />
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </section>
   );
