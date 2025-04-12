@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from "react";
 import { ArrowDown } from "lucide-react";
 import { motion } from "framer-motion";
@@ -37,15 +38,16 @@ const HeroSection = () => {
   const secondLineVisible = scrollY >= vh * 0.6;
   const thirdLineVisible = scrollY >= vh * 0.8;
 
-  // Calculate phone position based on scroll, but stop before footer
+  // Calculate phone position based on scroll, but stop before footer and ensure it remains visible
   const footerHeight = 300; // Approximate footer height
-  const maxPhoneScrollY = vh * 1.2 - footerHeight;
+  const maxPhoneScrollY = vh * 0.6; // Limit to keep phone visible in viewport
   const phoneScrollY = thirdLineVisible 
-    ? Math.min((scrollY - vh * 0.8) * 0.6, maxPhoneScrollY) 
+    ? Math.min((scrollY - vh * 0.8) * 0.4, maxPhoneScrollY) 
     : 0;
   
   // Calculate horizontal position to move phone to right side after all bullet points appear
-  const moveToRight = thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.2), 1) : 0;
+  // Limit the movement to ensure phone stays visible
+  const moveToRight = thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.2), 0.7) : 0;
 
   return (
     <section 
@@ -107,13 +109,13 @@ const HeroSection = () => {
             style={{ 
               opacity: phoneVisible ? Math.min((scrollY - vh * 0.2) / (vh * 0.2), 1) : 0,
               transform: `
-                translateX(${phoneVisible ? (moveToRight ? 'calc(50% - 150px)' : '0') : '50px'}) 
+                translateX(${phoneVisible ? (moveToRight ? 'calc(25% - 75px)' : '0') : '50px'}) 
                 translateY(${phoneScrollY}px) 
                 rotate(${5 - (moveToRight * 5)}deg)
               `,
               position: thirdLineVisible && scrollY > vh * 1.2 ? 'fixed' : 'relative',
-              top: thirdLineVisible && scrollY > vh * 1.2 ? '20%' : 'auto',
-              right: thirdLineVisible && scrollY > vh * 1.2 ? '5%' : 'auto',
+              top: thirdLineVisible && scrollY > vh * 1.2 ? '25%' : 'auto',
+              right: thirdLineVisible && scrollY > vh * 1.2 ? 'auto' : 'auto',
               zIndex: 10
             }}
           >
