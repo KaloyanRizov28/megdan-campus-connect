@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import { ArrowDown } from "lucide-react";
 import { motion } from "framer-motion";
@@ -6,27 +5,44 @@ import { motion } from "framer-motion";
 const HeroSection = () => {
   const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
+  const [windowHeight, setWindowHeight] = useState(0);
   
-  // Track scroll position
+  // Track scroll position and window height
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
     
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
+    };
+    
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+    
+    // Initial setup
+    handleResize();
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   // Calculate visibility thresholds based on viewport height
-  const vh = typeof window !== 'undefined' ? window.innerHeight : 0;
+  const vh = windowHeight;
   const titleVisible = scrollY < vh * 0.3;
   const phoneVisible = scrollY >= vh * 0.2;
   const firstLineVisible = scrollY >= vh * 0.4;
   const secondLineVisible = scrollY >= vh * 0.6;
   const thirdLineVisible = scrollY >= vh * 0.8;
 
-  // Calculate phone position based on scroll, but only start moving after all bullet points appear
-  const phoneScrollY = thirdLineVisible ? Math.min((scrollY - vh * 0.8) * 0.6, vh) : 0;
+  // Calculate phone position based on scroll, but stop before footer
+  const footerHeight = 300; // Approximate footer height
+  const maxPhoneScrollY = vh * 1.2 - footerHeight;
+  const phoneScrollY = thirdLineVisible 
+    ? Math.min((scrollY - vh * 0.8) * 0.6, maxPhoneScrollY) 
+    : 0;
   
   // Calculate horizontal position to move phone to right side after all bullet points appear
   const moveToRight = thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.2), 1) : 0;
