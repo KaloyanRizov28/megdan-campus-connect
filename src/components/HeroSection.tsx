@@ -25,17 +25,16 @@ const HeroSection = () => {
   const secondLineVisible = scrollY >= vh * 0.6;
   const thirdLineVisible = scrollY >= vh * 0.8;
 
-  // Phone transition calculations
-  const phoneScrollY = Math.min((scrollY - vh * 0.2) * 0.2, vh * 0.3);
-  const moveToRight = Math.min((scrollY - vh * 0.8) / (vh * 0.2), 1);
+  // Calculate phone position based on scroll, but only start moving after all bullet points appear
+  const phoneScrollY = thirdLineVisible ? Math.min((scrollY - vh * 0.8) * 0.6, vh) : 0;
   
-  // Phone dock position - smoother transition to fixed position
-  const shouldDock = scrollY > vh * 1.2;
+  // Calculate horizontal position to move phone to right side after all bullet points appear
+  const moveToRight = thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.2), 1) : 0;
 
   return (
     <section 
       ref={sectionRef} 
-      className="min-h-[180vh] relative bg-white"
+      className="min-h-[200vh] relative bg-white"
     >
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-4">
         {/* Main title - fades out as user scrolls */}
@@ -43,8 +42,7 @@ const HeroSection = () => {
           className="text-6xl md:text-8xl font-bold text-center"
           style={{ 
             opacity: titleVisible ? 1 - (scrollY / (vh * 0.3)) : 0,
-            filter: `blur(${scrollY / vh * 5}px)`,
-            transition: 'all 0.5s ease-out'
+            filter: `blur(${scrollY / vh * 5}px)`
           }}
         >
           Megdan
@@ -53,16 +51,14 @@ const HeroSection = () => {
         {/* Phone with iframe */}
         <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between mt-8">
           {/* Content that appears as user scrolls - on the left */}
-          <div className="max-w-md space-y-12 text-left transition-all duration-500" style={{
-            width: thirdLineVisible ? '50%' : '100%',
-            opacity: shouldDock ? 1 - ((scrollY - vh * 1.2) / (vh * 0.3)) : 1
+          <div className={`max-w-md space-y-12 text-left transition-all duration-300`} style={{
+            width: thirdLineVisible ? '50%' : '100%'
           }}>
             <motion.p 
               className="text-2xl md:text-3xl"
               style={{ 
                 opacity: firstLineVisible ? Math.min((scrollY - vh * 0.4) / (vh * 0.1), 1) : 0,
-                transform: `translateX(${firstLineVisible ? 0 : -20}px)`,
-                transition: 'all 0.5s ease-out'
+                transform: `translateX(${firstLineVisible ? 0 : -20}px)`
               }}
             >
               Connect with your university
@@ -72,8 +68,7 @@ const HeroSection = () => {
               className="text-2xl md:text-3xl"
               style={{ 
                 opacity: secondLineVisible ? Math.min((scrollY - vh * 0.6) / (vh * 0.1), 1) : 0,
-                transform: `translateX(${secondLineVisible ? 0 : -20}px)`,
-                transition: 'all 0.5s ease-out'
+                transform: `translateX(${secondLineVisible ? 0 : -20}px)`
               }}
             >
               Build your network
@@ -83,31 +78,27 @@ const HeroSection = () => {
               className="text-2xl md:text-3xl"
               style={{ 
                 opacity: thirdLineVisible ? Math.min((scrollY - vh * 0.8) / (vh * 0.1), 1) : 0,
-                transform: `translateX(${thirdLineVisible ? 0 : -20}px)`,
-                transition: 'all 0.5s ease-out'
+                transform: `translateX(${thirdLineVisible ? 0 : -20}px)`
               }}
             >
               Shape your future
             </motion.p>
           </div>
           
-          {/* Phone container - moves with smooth transitions */}
+          {/* Phone container - moves down with scroll and transitions to right position */}
           <motion.div 
-            className="relative mt-12 md:mt-0 transition-all"
+            className="relative mt-12 md:mt-0 transition-all duration-500"
             style={{ 
               opacity: phoneVisible ? Math.min((scrollY - vh * 0.2) / (vh * 0.2), 1) : 0,
               transform: `
-                translateX(${phoneVisible ? (moveToRight * 50) : 0}px) 
+                translateX(${phoneVisible ? (moveToRight ? 'calc(50% - 150px)' : '0') : '50px'}) 
                 translateY(${phoneScrollY}px) 
                 rotate(${5 - (moveToRight * 5)}deg)
               `,
-              position: shouldDock ? 'fixed' : 'relative',
-              top: shouldDock ? '50%' : 'auto',
-              right: shouldDock ? '50%' : 'auto',
-              marginRight: shouldDock ? '-150px' : '0',
-              marginTop: shouldDock ? '-300px' : '0',
-              zIndex: 10,
-              transition: 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)'
+              position: thirdLineVisible && scrollY > vh * 1.2 ? 'fixed' : 'relative',
+              top: thirdLineVisible && scrollY > vh * 1.2 ? '20%' : 'auto',
+              right: thirdLineVisible && scrollY > vh * 1.2 ? '5%' : 'auto',
+              zIndex: 10
             }}
           >
             <div className="w-[300px] h-[600px] bg-black rounded-[40px] p-3 shadow-xl">
