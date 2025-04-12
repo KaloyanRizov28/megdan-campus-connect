@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 
 interface AnimatedPhoneProps {
@@ -8,28 +7,46 @@ interface AnimatedPhoneProps {
 const AnimatedPhone = ({ className = "" }: AnimatedPhoneProps) => {
   const phoneRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       if (!phoneRef.current) return;
       
-      const scrollY = window.scrollY;
+      const rect = phoneRef.current.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+      setIsInView(isVisible);
+      
       // Calculate the scroll percentage (0-1) relative to viewport height
-      const scrollPercentage = Math.min(scrollY / (window.innerHeight * 0.8), 1);
-      setScrollPosition(scrollPercentage);
+      // But cap it when the phone is in view to keep it in frame
+      if (isVisible) {
+        const scrollY = window.scrollY;
+        const normalizedScrollPosition = Math.min(scrollY / (window.innerHeight * 0.8), 1);
+        setScrollPosition(normalizedScrollPosition);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
+    // Initial check
+    handleScroll();
+    
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Calculate rotation based on scroll - start at 30 degrees from 12 o'clock mark
   // 12 o'clock would be -90 degrees, so 30 degrees from that would be -60 degrees
   const initialRotation = -60;
-  const rotation = initialRotation + (scrollPosition * 60); // Rotate as we scroll
+  // Only rotate to a certain point and then stay fixed
+  const maxRotation = -20;
+  const rotation = isInView 
+    ? Math.min(initialRotation + (scrollPosition * 60), maxRotation)
+    : initialRotation;
   
-  // Move right as we scroll
-  const translateX = scrollPosition * 150; // More movement to the right
+  // Move right as we scroll, but cap the movement
+  const maxTranslateX = 100;
+  const translateX = isInView 
+    ? Math.min(scrollPosition * 150, maxTranslateX)
+    : 0;
 
   return (
     <div 
